@@ -53,6 +53,14 @@ class DiscordEXServer {
             });
         });
 
+        // Make services available to routes
+        this.app.use((req, res, next) => {
+            req.app.locals.discordBot = this.bot;
+            req.app.locals.mcpBridge = this.mcpBridge;
+            req.app.locals.database = this.db;
+            next();
+        });
+
         // API routes
         this.app.use('/api', require('./api/routes'));
         
@@ -100,6 +108,13 @@ class DiscordEXServer {
 🎯 Features: Discord Bot + MCP Bridge + Web Interface
 
 ${this.isDemo ? '💡 Demo mode: Set DISCORD_TOKEN environment variable for Discord integration' : '🤖 Discord bot is connected and ready!'}
+
+🌍 Deploy to web:
+- Vercel: https://vercel.com/new/clone?repository-url=https://github.com/boxi-rgb/discord-ex-platform
+- Render: https://render.com/
+- Heroku: heroku create your-app-name
+
+📖 Documentation: https://github.com/boxi-rgb/discord-ex-platform
             `);
         });
     }
