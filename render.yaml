@@ -1,0 +1,32 @@
+services:
+  - type: web
+    name: discord-ex-platform
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+    healthCheckPath: /health
+    autoDeploy: false
+
+databases:
+  - name: discord-ex-db
+    databaseName: discordex
+    user: discordex
+
+envVarGroups:
+  - name: discord-ex-env
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: discord-ex-db
+          property: connectionString
+      - key: DISCORD_TOKEN
+        sync: false  # User must set manually
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
